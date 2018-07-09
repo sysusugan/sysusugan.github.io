@@ -247,7 +247,7 @@
   <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑能力："><span class="toc-text">编辑能力：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blog部署："><span class="toc-text">Blog部署：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo插件："><span class="toc-text">Hexo插件：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重要的配置说明："><span class="toc-text">重要的配置说明：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图:</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑能力："><span class="toc-text">编辑能力：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blog部署："><span class="toc-text">Blog部署：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo插件："><span class="toc-text">Hexo插件：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apm插件："><span class="toc-text">apm插件：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重要的配置说明："><span class="toc-text">重要的配置说明：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图:</span></a></li></ol>
     </div>
   </div>
 
@@ -267,12 +267,13 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#发布到线上:</span></span><br><span class="line">hexo d  <span class="comment"># hexo deploy, 集成了git</span></span><br></pre></td></tr></table></figure>
 <h3 id="Hexo插件："><a href="#Hexo插件：" class="headerlink" title="Hexo插件："></a>Hexo插件：</h3><p><img src="/images/2018/07/hexo-atom-blog/hexo.png" style="height:400px"></p>
 <!-- ![hexo](/images/2018/07/hexo-atom-blog/hexo.png) -->
-<p>###插件：</p>
-<p><img src="/images/2018/07/hexo-atom-blog/apm插件.png" style="height:150px"></p>
+<h3 id="apm插件："><a href="#apm插件：" class="headerlink" title="apm插件："></a>apm插件：</h3><p><img src="/images/2018/07/hexo-atom-blog/apm插件.png" style="height:150px"></p>
 <h2 id="重要的配置说明："><a href="#重要的配置说明：" class="headerlink" title="重要的配置说明："></a>重要的配置说明：</h2><ol>
 <li>atom项目根路径： hexo项目的的source目录</li>
-<li>图片： 在source目录下面创建一个images文件夹，作为全局的文件路径</li>
+<li>图片统一存储：在source目录下面创建一个images文件夹，作为全局的文件路径</li>
+<li>markdown-writer，查看源代码，修改下面的地方，直接插入图片的时候， 路径就是完美的根路径， 跟部署到服务器上的路径也一致（下图）</li>
 </ol>
+<p><img src="/images/2018/07/hexo-atom-blog/md-writert-modify.png" style="height:200px"></p>
 <p>###图片路径修正方法:</p>
 <!-- ![p1](/images/2018/07/hexo-atom-blog/图片路径修正方法：.png) -->
 <p><img src="/images/2018/07/hexo-atom-blog/图片路径修正方法：.png" style="height:150px"></p>
