@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sysusugan.github.io/"/>
-  <updated>2018-07-09T08:40:51.000Z</updated>
+  <updated>2018-07-09T10:35:01.000Z</updated>
   <id>https://sysusugan.github.io/</id>
   
   <author>
@@ -21,18 +21,18 @@
     <link href="https://sysusugan.github.io/2018/07/08/hexo-atom-blog/"/>
     <id>https://sysusugan.github.io/2018/07/08/hexo-atom-blog/</id>
     <published>2018-07-08T08:23:00.000Z</published>
-    <updated>2018-07-09T08:40:51.000Z</updated>
+    <updated>2018-07-09T10:35:01.000Z</updated>
     
-    <content type="html"><![CDATA[<p>折腾了一整天的 atom、hexo相关插件安装配置，atom和hexo协作的一些小坑记录。 在调试多个插件的配置和协作， 最后不得不改了插件的源码来解决图片路径问题，  最后打造了一个靠谱的本地md写作编辑器。</p><h2 id="编辑能力："><a href="#编辑能力：" class="headerlink" title="编辑能力："></a>编辑能力：</h2><blockquote><p>得益于<a href="https://shd101wyy.github.io/markdown-preview-enhanced" target="_blank" rel="noopener">MPE扩展</a> （扩展语法、绘图， 编辑功能完爆马克飞象、Macdown这些，  还可以方便地在渲染后，借助浏览器或额外的插件， 在本地导出pdf。</p></blockquote><blockquote><p>得益于atom 的强大插件机制，  配出了顶部的markdown工具栏、右侧markdown增强渲染栏、 图片上传（支持截屏拷贝粘贴）和生成正确路径。</p></blockquote><a id="more"></a><h2 id="Blog部署："><a href="#Blog部署：" class="headerlink" title="Blog部署："></a>Blog部署：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#本地预览：</span></span><br><span class="line">hexo clean &amp;&amp; hexo  g  &amp;&amp; hexo server -d</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#发布到线上:</span></span><br><span class="line">hexo d  <span class="comment"># hexo deploy, 集成了git</span></span><br></pre></td></tr></table></figure><h3 id="Hexo插件："><a href="#Hexo插件：" class="headerlink" title="Hexo插件："></a>Hexo插件：</h3><p><img src="/images/2018/07/hexo-atom-blog/hexo.png" style="height:400px"></p><!-- ![hexo](/images/2018/07/hexo-atom-blog/hexo.png) --><p>###插件：</p><p><img src="/images/2018/07/hexo-atom-blog/apm插件.png" style="height:150px"></p><h2 id="重要的配置说明："><a href="#重要的配置说明：" class="headerlink" title="重要的配置说明："></a>重要的配置说明：</h2><ol><li>atom项目根路径： hexo项目的的source目录</li><li>图片： 在source目录下面创建一个images文件夹，作为全局的文件路径</li></ol><p>###图片路径修正方法:</p><!-- ![p1](/images/2018/07/hexo-atom-blog/图片路径修正方法：.png) --><p><img src="/images/2018/07/hexo-atom-blog/图片路径修正方法：.png" style="height:150px"></p><h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图:"></a>效果图:</h2><p><img src="/images/2018/07/hexo-atom-blog/总图.png" alt="总图"></p><p><img src="/images/2018/07/hexo-atom-blog/img-up.png" alt="本地文件上传"></p>]]></content>
+    <content type="html"><![CDATA[<p>折腾了一整天的 atom、hexo相关插件安装配置，atom和hexo协作的一些小坑记录。在调试多个插件的配置和协作， 最后不得不改了插件的源码来解决图片路径问题，  最后打造了一个靠谱的本地md写作编辑器。</p><h2 id="编辑能力："><a href="#编辑能力：" class="headerlink" title="编辑能力："></a>编辑能力：</h2><blockquote><p>得益于<a href="https://shd101wyy.github.io/markdown-preview-enhanced" target="_blank" rel="noopener">MPE扩展</a> （扩展语法、绘图， 编辑功能完爆马克飞象、Macdown这些，  还可以方便地在渲染后，借助浏览器或额外的插件， 在本地导出pdf。</p></blockquote><blockquote><p>得益于atom 的强大插件机制，  配出了顶部的markdown工具栏、右侧markdown增强渲染栏、 图片上传（支持截屏拷贝粘贴）和生成正确路径。</p></blockquote><a id="more"></a><h2 id="Blog部署："><a href="#Blog部署：" class="headerlink" title="Blog部署："></a>Blog部署：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#本地预览：</span></span><br><span class="line">hexo clean &amp;&amp; hexo  g  &amp;&amp; hexo server -d</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#发布到线上:</span></span><br><span class="line">hexo d  <span class="comment"># hexo deploy, 集成了git</span></span><br></pre></td></tr></table></figure><h3 id="Hexo插件："><a href="#Hexo插件：" class="headerlink" title="Hexo插件："></a>Hexo插件：</h3><p><img src="/images/2018/07/hexo-atom-blog/hexo.png" style="height:400px"></p><!-- ![hexo](/images/2018/07/hexo-atom-blog/hexo.png) --><p>###插件：</p><p><img src="/images/2018/07/hexo-atom-blog/apm插件.png" style="height:150px"></p><h2 id="重要的配置说明："><a href="#重要的配置说明：" class="headerlink" title="重要的配置说明："></a>重要的配置说明：</h2><ol><li>atom项目根路径： hexo项目的的source目录</li><li>图片： 在source目录下面创建一个images文件夹，作为全局的文件路径</li></ol><p>###图片路径修正方法:</p><!-- ![p1](/images/2018/07/hexo-atom-blog/图片路径修正方法：.png) --><p><img src="/images/2018/07/hexo-atom-blog/图片路径修正方法：.png" style="height:150px"></p><h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图:"></a>效果图:</h2><p><img src="/images/2018/07/hexo-atom-blog/总图.png" alt="总图"></p><p><img src="/images/2018/07/hexo-atom-blog/img-up.png" alt="本地文件上传"></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;折腾了一整天的 atom、hexo相关插件安装配置，atom和hexo协作的一些小坑记录。 在调试多个插件的配置和协作， 最后不得不改了插件的源码来解决图片路径问题，  最后打造了一个靠谱的本地md写作编辑器。&lt;/p&gt;
+      &lt;p&gt;折腾了一整天的 atom、hexo相关插件安装配置，atom和hexo协作的一些小坑记录。在调试多个插件的配置和协作， 最后不得不改了插件的源码来解决图片路径问题，  最后打造了一个靠谱的本地md写作编辑器。&lt;/p&gt;
 &lt;h2 id=&quot;编辑能力：&quot;&gt;&lt;a href=&quot;#编辑能力：&quot; class=&quot;headerlink&quot; title=&quot;编辑能力：&quot;&gt;&lt;/a&gt;编辑能力：&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;得益于&lt;a href=&quot;https://shd101wyy.github.io/markdown-preview-enhanced&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MPE扩展&lt;/a&gt; （扩展语法、绘图， 编辑功能完爆马克飞象、Macdown这些，  还可以方便地在渲染后，借助浏览器或额外的插件， 在本地导出pdf。&lt;/p&gt;
+&lt;p&gt;得益于&lt;a href=&quot;https://shd101wyy.github.io/markdown-preview-enhanced&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MPE扩展&lt;/a&gt; （扩展语法、绘图， 编辑功能完爆马克飞象、Macdown这些，  还可以方便地在渲染后，借助浏览器或额外的插件， 在本地导出pdf。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;
-&lt;p&gt;得益于atom 的强大插件机制，  配出了顶部的markdown工具栏、右侧markdown增强渲染栏、 图片上传（支持截屏拷贝粘贴）和生成正确路径。&lt;/p&gt;
+&lt;p&gt;得益于atom 的强大插件机制，  配出了顶部的markdown工具栏、右侧markdown增强渲染栏、 图片上传（支持截屏拷贝粘贴）和生成正确路径。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
