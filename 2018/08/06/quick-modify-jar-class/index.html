@@ -17,8 +17,12 @@
 
 
 
+  <meta name="description" content="快速编译和修改特定class文件"/>
 
 
+
+
+  <meta name="keywords" content="java, Sugan's blog" />
 
 
 
@@ -38,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://sysusugan.github.io/"/>
+<link rel="canonical" href="https://sysusugan.github.io/2018/08/06/quick-modify-jar-class/"/>
 
 
 
@@ -103,7 +107,7 @@
   window.config = {"title":"Sugan's blog","subtitle":"Keep on thinking, and learn how people think.","description":null,"author":"sugan","language":"zh-CN","timezone":null,"url":"https://sysusugan.github.io","root":"/","permalink":":year/:month/:day/:title/","permalink_defaults":null,"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":null,"new_post_name":":title.md","default_layout":"post","titlecase":false,"external_link":true,"filename_case":0,"render_drafts":false,"post_asset_folder":false,"relative_link":false,"future":true,"highlight":{"enable":true,"auto_detect":true,"line_number":true,"tab_replace":null,"first_line_number":"always1"},"default_category":"uncategorized","category_map":null,"tag_map":null,"date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","per_page":10,"pagination_dir":"page","theme":"even","deploy":{"type":"git","repository":{"coding":"git@git.coding.net:sysusugan/sysusugan.git"},"branch":"master"},"ignore":[],"keywords":null,"index_generator":{"per_page":10,"order_by":"-date","path":""},"sequence":{"options":{"theme":null,"css_class":null}},"flowchart":{"webfont":"https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.27/webfontloader.js","raphael":"https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js","underscore":"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js","sequence":"https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js","css":"","options":{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12},"flowchart":"https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.11.3/flowchart.min.js"},"archive_generator":{"per_page":10,"yearly":true,"monthly":true,"daily":false},"category_generator":{"per_page":10},"feed":{"type":"atom","limit":20,"hub":"","content":true,"content_limit":140,"content_limit_delim":"","path":"atom.xml"},"sitemap":{"path":"sitemap.xml"},"tag_generator":{"per_page":10},"marked":{"gfm":true,"pedantic":false,"sanitize":false,"tables":true,"breaks":true,"smartLists":true,"smartypants":true,"modifyAnchors":"","autolink":true},"server":{"port":4000,"log":false,"ip":"0.0.0.0","compress":false,"header":true},"since":2018,"favicon":"/favicon.ico","rss":false,"menu":{"Home":"/","Archives":"/archives/","Tags":"/tags","Categories":"/categories","About":"/about"},"color":"Default","toc":true,"fancybox":true,"pjax":true,"copyright":{"enable":false,"license":"<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/4.0/\" target=\"_blank\">知识共享署名-非商业性使用 4.0 国际许可协议</a>"},"reward":{"enable":false,"qrCode":{"wechat":null,"alipay":null}},"social":{"email":null,"stack-overflow":null,"twitter":null,"facebook":null,"linkedin":null,"google":null,"github":null,"weibo":null,"zhihu":null,"douban":null,"pocket":null,"tumblr":null,"instagram":null},"leancloud":{"app_id":"XNizmlDfL5XRLVzHx9FUDwzr-gzGzoHsz","app_key":"qAaEaIAnQtg7e7OdcpGIt4Vg"},"baidu_analytics":"3cfc01f01e71ce7de1a397c717086fcf","baidu_verification":null,"google_analytics":null,"google_verification":null,"changyan":{"appid":null,"appkey":null},"livere_datauid":"MTAyMC8zODc2MC8xNTI4OA==","version":"2.9.0"};
 </script>
 
-    <title> Sugan's blog </title>
+    <title> 快速编译和修改特定class文件 - Sugan's blog </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -232,14 +236,12 @@
         <div class="content-wrapper">
           <div id="content" class="content">
             
-  <section id="posts" class="posts">
-    
-      
+  
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/08/06/quick-modify-jar-class/">快速编译和修改特定class文件</a>
+          快速编译和修改特定class文件
         
       </h1>
 
@@ -266,156 +268,107 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前提知识"><span class="toc-text">前提知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求场景"><span class="toc-text">需求场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作步骤"><span class="toc-text">操作步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-          
-        
+        <p>在这里介绍一种快速编译和修改jar里面特定class文件的方法， 本质上是对javac 、java、zip命令的综合使用。 在某些场景，能极大地提高部署和上线效率， 但是仅适用于少数为了快速调试、对外上线的特定业务场景。但是， 在正规的工程管理里面，仍然需要按项目开发和代码管理规范来！</p>
+<a id="more"></a>
+<h2 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h2><ol>
+<li>jar文件本质是采用zip压缩的zip包，允许使用 zip、unzip命令对jar文件进行操作， 具体自己看man手册</li>
+<li>javac 只需要依赖的环境（依赖的环境变量、jar classpath ）完整即可正常对一个工程或java文件进行编译</li>
+</ol>
+<h2 id="需求场景"><a href="#需求场景" class="headerlink" title="需求场景"></a>需求场景</h2><p>以编译 HDP自带的 ranger unixusersync包为例，  ranger的源代码见：<a href="https://github.com/apache/ranger/tree/ranger-0.5.2-rc1/" target="_blank" rel="noopener">https://github.com/apache/ranger/tree/ranger-0.5.2-rc1/</a></p>
+<p>需要修改下面这个文件， 改动里面的默认成参数，加快自动同步LDAP用户信息到ranger的频率（默认是1小时）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径：  org/apache/ranger/unixusersync/config/UserGroupSyncConfig.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> UGSYNC_SLEEP_TIME_IN_MILLIS_BETWEEN_CYCLE_LDAP_DEFAULT_VALUE = <span class="number">3600000L</span>;”</span><br></pre></td></tr></table></figure>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li><p>在HDP安装目录，找到目标的ranger jar文件为： unixusersync-0.5.0.2.4.2.0-258.jar</p>
+</li>
+<li><p>拷贝jar重命名为 “unixusersync-0.5.0.2.4.2.0-258_sugan.jar” , 然后删除这个拷贝的jar里面指定的class文件</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@orochihdp1 dist]# cp unixusersync-0.5.0.2.4.2.0-258.jar  unixusersync-0.5.0.2.4.2.0-258_sugan.jar</span><br><span class="line">[root@orochihdp1 dist]# zip -d unixusersync-0.5.0.2.4.2.0-258_sugan.jar '/org/apache/ranger/unixusersync/config/UserGroupSyncConfig.class'</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>修改UserGroupSyncConfig.java 里面的值</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> UGSYNC_SLEEP_TIME_IN_MILLIS_BETWEEN_CYCLE_LDAP_DEFAULT_VALUE = <span class="number">60000L</span>;”      </span><br><span class="line"><span class="comment">//    改成 60000L，加快自动同步LDAP用户信息到ranger的频率，默认是1小时</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>编译：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 路径： root@orochihdp1:/usr/hdp/current/ranger-usersync/dist</span></span><br><span class="line"></span><br><span class="line">javac -Xlint:unchecked  -cp  /usr/hdp/current/ranger-usersync/lib/commons-cli-1.2.jar:/usr/hdp/current/ranger-usersync/lib/commons-codec-1.9.jar:/usr/hdp/current/ranger-usersync/lib/commons-collections-3.2.2.jar:/usr/hdp/current/ranger-usersync/lib/commons-configuration-1.10.jar:/usr/hdp/current/ranger-usersync/lib/commons-csv-1.0.jar:/usr/hdp/current/ranger-usersync/lib/commons-httpclient-3.1.jar:/usr/hdp/current/ranger-usersync/lib/commons-io-2.4.jar:/usr/hdp/current/ranger-usersync/lib/commons-lang-2.6.jar:/usr/hdp/current/ranger-usersync/lib/commons-logging-1.2.jar:/usr/hdp/current/ranger-usersync/lib/credentialbuilder-0.5.0.2.4.2.0-258.jar:/usr/hdp/current/ranger-usersync/lib/gson-2.2.4.jar:/usr/hdp/current/ranger-usersync/lib/guava-11.0.2.jar:/usr/hdp/current/ranger-usersync/lib/hadoop-auth-2.7.1.2.4.2.0-258.jar:/usr/hdp/current/ranger-usersync/lib/hadoop-common-2.7.1.2.4.2.0-258.jar:/usr/hdp/current/ranger-usersync/lib/htrace-core-3.1.0-incubating.jar:/usr/hdp/current/ranger-usersync/lib/jersey-bundle-1.17.1.jar:/usr/hdp/current/ranger-usersync/lib/log4j-1.2.17.jar:/usr/hdp/current/ranger-usersync/lib/ranger-util-0.5.0.2.4.2.0-258.jar:/usr/hdp/current/ranger-usersync/lib/slf4j-api-1.7.5.jar:unixauthservice-0.5.0.2.4.2.0-258.jar:**./unixusersync-0.5.0.2.4.2.0-258_sugan.jar **   ./org/apache/ranger/unixusersync/config/UserGroupSyncConfig.java</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>把编译出来的class文件打进jar</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -ru unixusersync-0.5.0.2.4.2.0-258_sugan.jar org/</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>把新的jar替换掉原来的jar（ 记得备份旧的）， 重启ranger</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面演示了这种方法， 体现了对Apache ranger这个组件的源码进行修改的便利性， 帮助我们省去了完整的ranger工程项目下载和本地搭建、  本地编译打包（这个过程还需要下载大量依赖的其他包， 而且编译时间也颇久），  节约了大量的时间。</p>
+<p>借助这种猥琐姿势， 我们能在以下场景中提高我们的效率：</p>
+<ul>
+<li>开源组件源码修改和编译：  Hadoop、spark、yarn等等只要有对标版本的源码，  我们能快速修改某个jar的源代码和上线</li>
+<li>线上平台调试： 对一些问题的调试，  可以临时写个java， 在线上环境（例如跳板机）编译和运行后做 debug</li>
+<li>简单的逆向和破解场景： 这个方法同样适用，  前提是可反编译出目标代码并且目标的jar没做额外的加固和授权，  例如大部分第三方插件如 Jira a插件的破解</li>
+</ul>
 
-        
-          <p>在这里介绍一种快速编译和修改jar里面特定class文件的方法， 本质上是对javac 、java、zip命令的综合使用。 在某些场景，能极大地提高部署和上线效率， 但是仅适用于少数为了快速调试、对外上线的特定业务场景。但是， 在正规的工程管理里面，仍然需要按项目开发和代码管理规范来！</p>
-          <div class="read-more">
-            <a href="/2018/08/06/quick-modify-jar-class/" class="read-more-link">阅读更多</a>
-          </div>
-        
       
     </div>
 
     
-
-    
-
-  </article>
-
-    
       
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/28/blog-start/">博客开篇</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-28
-        </span>
-        
-        
-        <div class="post-visits"
-             data-url="/2018/07/28/blog-start/"
-             data-title="博客开篇">
-            阅读次数 0
-          </div>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
 
-        
-          <p>背景是之前7月初的时候心血来潮，感觉要开始写博客记录一些东西。在花了周末两天时间去折腾和搭建这个博客后， 就拖到7月底（期间都没碰过这个博客）， 现在才想起来要写个真正意义的博客的开篇文章。<br>
-          <div class="read-more">
-            <a href="/2018/07/28/blog-start/" class="read-more-link">阅读更多</a>
-          </div>
-        
+
+
       
-    </div>
-
-    
-
-    
-
-  </article>
-
-    
       
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/08/hexo-atom-blog/">基于hexo、atom打造本地写作环境和搭建blog</a>
-        
-      </h1>
+    
 
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-08
-        </span>
+    
+      <footer class="post-footer">
         
-          <div class="post-category">
+          <div class="post-tags">
             
-              <a href="/categories/技术/">技术</a>
+              <a href="/tags/java/">java</a>
             
           </div>
         
         
-        <div class="post-visits"
-             data-url="/2018/07/08/hexo-atom-blog/"
-             data-title="基于hexo、atom打造本地写作环境和搭建blog">
-            阅读次数 0
-          </div>
         
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>折腾了一整天的 atom、hexo相关插件安装配置，atom和hexo协作的一些小坑记录。在调试多个插件的配置和协作， 最后不得不改了插件的源码来解决图片路径问题，  最后打造了一个靠谱的本地md写作编辑器。</p>
-<h2 id="编辑能力："><a href="#编辑能力：" class="headerlink" title="编辑能力："></a>编辑能力：</h2><blockquote>
-<p>得益于<a href="https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/" target="_blank" rel="noopener">MPE扩展</a> （扩展语法、绘图， 编辑功能完爆马克飞象、Macdown这些，  还可以方便地在渲染后，借助浏览器或额外的插件， 在本地导出pdf。</p>
-</blockquote>
-<blockquote>
-<p>得益于atom 的强大插件机制，  配出了顶部的markdown工具栏、右侧markdown增强渲染栏、 图片上传（支持截屏拷贝粘贴）和生成正确路径。</p>
-</blockquote>
-          <div class="read-more">
-            <a href="/2018/07/08/hexo-atom-blog/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    
+      <a class="next" href="/2018/07/28/blog-start/">
+        <span class="next-text nav-default">博客开篇</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
     
   </nav>
 
+      </footer>
+    
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zODc2MC8xNTI4OA==">
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+      </div>  
+    
+  </div>
+
 
         </div>
       </main>
@@ -487,6 +440,25 @@
     </div>
 
     
+  
+  
+
+  
+   <script type="text/javascript">
+	(function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+  </script>
+
+
 
 
     
