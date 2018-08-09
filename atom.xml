@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sysusugan.github.io/"/>
-  <updated>2018-07-28T18:40:55.000Z</updated>
+  <updated>2018-07-28T17:48:10.000Z</updated>
   <id>https://sysusugan.github.io/</id>
   
   <author>
@@ -15,27 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>know-the-world</title>
-    <link href="https://sysusugan.github.io/2018/07/29/know-the-world/"/>
-    <id>https://sysusugan.github.io/2018/07/29/know-the-world/</id>
-    <published>2018-07-28T16:58:00.000Z</published>
-    <updated>2018-07-28T18:40:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="写在前面："><a href="#写在前面：" class="headerlink" title="写在前面："></a>写在前面：</h2><p>背景是之前7月初的时候心血来潮，感觉要开始写博客记录一些东西。在花了周末两天时间去折腾和搭建这个博客后， 就拖到7月底（期间都没碰过这个博客）， 现在才想起来要写个真正意义的博客的开篇文章。</p><p>对于这个博客的打算， 主要是以记录一些生活感悟、技术文章为主， 期望一个月能产出至少1篇吧。 简单讲下写博客的目标：</p><ul><li><p>对知识成体系的整理：对各个领域学习的知识进行整理。之前的做法是只要是能在网上找到的资料，就先摘录相关知识点放在印象笔记里面。 缺点是知识比较碎片化，而且没转换成自己的知识体系进行梳理。通过写博客，可以来push自己来整理和分享出来。</p></li><li><p>夯实自己的认知体系： 大部分会是对生活和工作经历的反思跟总结。 年轻的时候还没形成相对稳定的世界观和方法论，所以只是观察和思考为主，记下来估计也是流水账。现在年纪大了成熟了（咳咳），对比了前几年，觉得自己有自信能写出一些能体现“独立思考”跟对自己本时期有价值的感悟，写下来也好提醒自己不断去付诸实践。</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;写在前面：&quot;&gt;&lt;a href=&quot;#写在前面：&quot; class=&quot;headerlink&quot; title=&quot;写在前面：&quot;&gt;&lt;/a&gt;写在前面：&lt;/h2&gt;&lt;p&gt;背景是之前7月初的时候心血来潮，感觉要开始写博客记录一些东西。在花了周末两天时间去折腾和搭建这个博客后， 就拖
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>基于hexo、atom打造本地写作环境和搭建blog</title>
@@ -64,6 +43,28 @@
       <category term="Hexo" scheme="https://sysusugan.github.io/tags/Hexo/"/>
     
       <category term="Atom编辑器" scheme="https://sysusugan.github.io/tags/Atom%E7%BC%96%E8%BE%91%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>博客启动</title>
+    <link href="https://sysusugan.github.io/2018/07/07/blog-start/"/>
+    <id>https://sysusugan.github.io/2018/07/07/blog-start/</id>
+    <published>2018-07-07T00:00:00.000Z</published>
+    <updated>2018-08-09T08:17:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>背景是之前7月初的时候心血来潮，感觉要开始写博客记录一些东西。在花了周末两天时间去折腾和搭建这个博客后， 就拖到7月底（期间都没碰过这个博客）， 现在才想起来要写个真正意义的博客的开篇文章。</p><p>对于这个博客的打算， 主要是以记录一些生活感悟、技术文章为主， 期望一个月能产出至少1篇吧。 简单讲下写博客的目标：</p><ul><li><p>对知识成体系的整理：对各个领域学习的知识进行整理。之前的做法是只要是能在网上找到的资料，就先摘录相关知识点放在印象笔记里面。 缺点是知识比较碎片化，而且没转换成自己的知识体系进行梳理。通过写博客，可以来push自己来整理和分享出来。</p></li><li><p>夯实自己的认知体系： 大部分会是对生活和工作经历的反思跟总结。 年轻的时候还没形成相对稳定的世界观和方法论，所以只是观察和思考为主，记下来估计也是流水账。现在年纪大了成熟了（咳咳），对比了前几年，觉得自己有自信能写出一些能体现“独立思考”跟对自己本时期有价值的感悟，写下来也好提醒自己不断去付诸实践。</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;背景是之前7月初的时候心血来潮，感觉要开始写博客记录一些东西。在花了周末两天时间去折腾和搭建这个博客后， 就拖到7月底（期间都没碰过这个博客）， 现在才想起来要写个真正意义的博客的开篇文章。&lt;/p&gt;
+&lt;p&gt;对于这个博客的打算， 主要是以记录一些生活感悟、技术文章为主
+      
+    
+    </summary>
+    
     
   </entry>
   
