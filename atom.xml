@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sysusugan.github.io/"/>
-  <updated>2018-08-09T16:46:45.000Z</updated>
+  <updated>2018-08-29T19:06:02.000Z</updated>
   <id>https://sysusugan.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HBase二级索引</title>
+    <link href="https://sysusugan.github.io/2018/08/29/hbase-secondary-index/"/>
+    <id>https://sysusugan.github.io/2018/08/29/hbase-secondary-index/</id>
+    <published>2018-08-29T06:54:00.000Z</published>
+    <updated>2018-08-29T19:06:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="HBase简介"><a href="#HBase简介" class="headerlink" title="HBase简介"></a>HBase简介</h2><p>HBase是一个构建在HDFS之上，用于海量数据存储分布式列存储系统。<br>参见下图，由于在HBase中：</p><ul><li>表的每行都是按照RowKey的字典序排序存储</li><li>表的数据是按照RowKey区间进行分割存储成多个region</li></ul><p>所以HBase主要适用下面这两种常见场景：</p><ul><li>适用于基于rowkey的单行数据快速随机读写</li><li>适合基于rowkey前缀的范围扫描</li></ul><p><img src="/images/2018/08/hbase-secondary-index/hbase-arch.png" alt="hbase-arch"></p><p><img src="/images/2018/08/hbase-secondary-index/hbase-region-splits.png" alt="hbase-region-splits"></p><h2 id="为什么需要HBase二级索引"><a href="#为什么需要HBase二级索引" class="headerlink" title="为什么需要HBase二级索引"></a>为什么需要HBase二级索引</h2><p>HBase里面只有rowkey作为一级索引， 如果要对库里的非rowkey字段进行数据检索和查询， 往往要通过MapReduce/Spark等分布式计算框架进行， 硬件资源消耗和时间延迟都会比较高。<br>为了HBase的数据查询更高效、适应更多的场景， 诸如使用非rowkey字段检索也能做到秒级响应， 或者支持各个字段进行模糊查询和多字段组合查询等， 因此需要在HBase上面构建二级索引， 以满足现实中更复杂多样的业务需求。</p><h2 id="HBase二级索引方案"><a href="#HBase二级索引方案" class="headerlink" title="HBase二级索引方案"></a>HBase二级索引方案</h2><p>接下来介绍下主流的几种HBase二级索引方案：</p><h3 id="基于Coprocessor方案"><a href="#基于Coprocessor方案" class="headerlink" title="基于Coprocessor方案"></a>基于Coprocessor方案</h3><h4 id="官方特性"><a href="#官方特性" class="headerlink" title="官方特性"></a>官方特性</h4><p>其实从0.94版本开始，HBase官方文档已经提出了hbase上面实现二级索引的一种路径：</p><ol><li>基于Coprocessor（0.92版本开始引入，达到支持类似传统RDBMS的触发器的行为）</li><li>开发自定义数据处理逻辑， 采用数据“双写”（dual-write）策略，在有数据写入同时同步到二级索引表</li></ol><h4 id="开源方案"><a href="#开源方案" class="headerlink" title="开源方案"></a>开源方案</h4><p>虽然官方一直也没提供内置的支持二级索引的工具， 不过业界也有些比较知名的基于Coprocessor的开源方案：</p><ul><li>华为的hindex ： 基于0.94版本，当年刚出来的时候比较火，但是版本较旧，看GitHub项目地址最近这几年就没更新过。</li><li>Apache Phoenix： 功能围绕着SQL on hbase，支持和兼容多个hbase版本， 二级索引只是其中一块功能。  二级索引的创建和管理直接有SQL语法支持，使用起来很简便， 该项目目前社区活跃度和版本更新迭代情况都比较好。</li></ul><p>Apache Phoenix在Hadoop生态里面位置：<br><img src="/images/2018/08/hbase-secondary-index/phoenix-arch.png" alt="phoenix-arch"></p><p>其他的在网上也很多自己基于Coprocessor实现二级索引的文章，大体都是遵循类似的思路：  构建一份“索引”的映射关系，存储在另一张hbase表或者其他DB里面。</p><h4 id="方案优缺点："><a href="#方案优缺点：" class="headerlink" title="方案优缺点："></a>方案优缺点：</h4><ul><li>优点： 基于Coprocessor的方案，从开发设计的角度看， 把很多对二级索引管理的细节都封装在的Coprocessor具体实现类里面， 这些细节对外面读写的人是无感知的，简化了数据访问者的使用。  </li><li>缺点： 但是Coprocessor的方案入侵性比较强， 增加了在Regionserver内部需要运行和维护二级索引关系表的代码逻辑等，对Regionserver的写入性能会有一定影响。</li></ul><h3 id="非Coprocessor方案"><a href="#非Coprocessor方案" class="headerlink" title="非Coprocessor方案"></a>非Coprocessor方案</h3><p></p><p>选择不基于Coprocessor开发，自行在外部构建和维护索引关系也是另外一种方式。常见的是采用底层基于Apache Lucene的Elasticsearch(下面简称ES)或Apache Solr ，来构建强大的索引能力、搜索能力，  例如支持模糊查询、全文检索、组合查询、排序等。</p><h4 id="Lily-HBase-Indexer"><a href="#Lily-HBase-Indexer" class="headerlink" title="Lily HBase Indexer"></a>Lily HBase Indexer</h4><p>Lily HBase Indexer(也简称 HBase Indexer)是国外的NGDATA开源的基于solr的索引构建工具， 特色是其基于HBase的备份机制，开发了一个叫SEP工具， 通过监控HBase 的WAL日志（Put/Delete操作），来触发对solr集群索引的异步更新， 基本对HBase无侵入性（但必须开启WAL ）， 流程图如下所示:</p><p><img src="/images/2018/08/hbase-secondary-index/lily-hbase-indexer.png" alt="lily-hbase-indexer"></p><h4 id="CDH-Search"><a href="#CDH-Search" class="headerlink" title="CDH Search"></a>CDH Search</h4><p>CDH Search是Hadoop发行商Cloudera公司开发的基于solr的HBase检索方案，部分集成了Lily HBase Indexer的功能。<br>下面是CDH search的核心组件交互图， 体现了在单次client端查询过程中， 核心的zookeeper和solr等的交互流程：<br><img src="/images/2018/08/hbase-secondary-index/cdh-search.png" alt="cdh-search"></p><h4 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h4><p>其实对于在外部自定义构建二级索引的方式，  有自己的大数据团队的公司一般都会针对自己的业务场景， 自行构建ES/Solr的搜索集群。  对自己的索引集群进行业务定制和索引管理策略上的优化， 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。</p><p>下面显示了数说基于ES做二级索引的构建流程， 包含：</p><ul><li>增量索引： 日常持续接入的数据源， 进行增量的索引更新</li><li>全量索引： 配套基于Spark/MR的批量索引创建/更新程序， 用于初次或重建已有HBase库表的索引</li></ul><p><img src="/images/2018/08/hbase-secondary-index/ds-all-db.png" alt="ds-all-db"></p><p>数据查询流程：</p><p><img src="/images/2018/08/hbase-secondary-index/ds-alldb-query.png" alt="ds-alldb-query"></p><p>其实数说故事在做全量库的过程中，还是有更多遇到的问题要解决，诸如数据一致性、大量小索引、多版本ES集群等，会在后续进行更细致的介绍和分享。</p><!-- HBase作为在大数据技术生态系统中，几乎是不可或缺的一个存储数据库。 我们为了沿用HBase的海量存储特性，又让其能在不同业务场景中的满足我们的存储和查询需求， 需要对HBase构建二级索引。 通过对比了HBase官方、开源界和hadoop发行商、 大数据企业等的实施方案， --><p><hr><br>参考资料：</p><ul><li>Hbase coprocessor: <a href="https://blogs.apache.org/hbase/entry/coprocessor_introduction" target="_blank" rel="noopener">https://blogs.apache.org/hbase/entry/coprocessor_introduction</a></li><li>Cloudera Search : <a href="https://www.cloudera.com/documentation/enterprise/5-14-x/topics/search.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/5-14-x/topics/search.html</a></li><li>Apache Phoenix: <a href="https://phoenix.apache.org/secondary_indexing.html" target="_blank" rel="noopener">https://phoenix.apache.org/secondary_indexing.html</a></li><li>Lily HBase Indexer:  <ul><li><a href="https://github.com/NGDATA/hbase-indexer/wiki" target="_blank" rel="noopener">https://github.com/NGDATA/hbase-indexer/wiki</a></li><li><a href="https://www.ngdata.com/the-hbase-side-effect-processor-and-hbase-replication-monitoring/" target="_blank" rel="noopener">https://www.ngdata.com/the-hbase-side-effect-processor-and-hbase-replication-monitoring/</a></li></ul></li><li>深入理解HBase Indexer:<a href="https://blog.csdn.net/d6619309/article/details/51500368" target="_blank" rel="noopener">https://blog.csdn.net/d6619309/article/details/51500368</a></li><li>奇虎360 HBASE二级索引的设计与实践：  <a href="http://www.infoq.com/cn/presentations/qihoo360-hbase-two-stage-index-design-and-practice" target="_blank" rel="noopener">http://www.infoq.com/cn/presentations/qihoo360-hbase-two-stage-index-design-and-practice</a></li><li>华为hindex: <a href="https://github.com/Huawei-Hadoop/hindex" target="_blank" rel="noopener">https://github.com/Huawei-Hadoop/hindex</a></li><li>HBase应用场景、原理与基本架构: <a href="https://blog.csdn.net/qq_25371579/article/details/50894145" target="_blank" rel="noopener">https://blog.csdn.net/qq_25371579/article/details/50894145</a></li></ul><p><br></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;HBase简介&quot;&gt;&lt;a href=&quot;#HBase简介&quot; class=&quot;headerlink&quot; title=&quot;HBase简介&quot;&gt;&lt;/a&gt;HBase简介&lt;/h2&gt;&lt;p&gt;HBase是一个构建在HDFS之上，用于海量数据存储分布式列存储系统。&lt;br&gt;参见下图，由于在HBa
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="https://sysusugan.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="hbase" scheme="https://sysusugan.github.io/tags/hbase/"/>
+    
+      <category term="elasticsearch" scheme="https://sysusugan.github.io/tags/elasticsearch/"/>
+    
+  </entry>
   
   <entry>
     <title>快速编译和修改特定class文件</title>
