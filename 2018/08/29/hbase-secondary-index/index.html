@@ -17,7 +17,7 @@
 
 
 
-  <meta name="description" content="HBase二级索引"/>
+  <meta name="description" content="HBase二级索引方案"/>
 
 
 
@@ -107,7 +107,7 @@
   window.config = {"title":"Sugan's blog","subtitle":"Keep on thinking, and learn how people think.","description":null,"author":"sugan","language":"zh-CN","timezone":null,"url":"https://sysusugan.github.io","root":"/","permalink":":year/:month/:day/:title/","permalink_defaults":null,"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":null,"new_post_name":":title.md","default_layout":"post","titlecase":false,"external_link":true,"filename_case":0,"render_drafts":false,"post_asset_folder":false,"relative_link":false,"future":true,"highlight":{"enable":true,"auto_detect":true,"line_number":true,"tab_replace":null,"first_line_number":"always1"},"default_category":"uncategorized","category_map":null,"tag_map":null,"date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","per_page":10,"pagination_dir":"page","theme":"even","deploy":{"type":"git","repository":{"coding":"git@git.coding.net:sysusugan/sysusugan.git"},"branch":"master"},"ignore":[],"keywords":null,"index_generator":{"per_page":10,"order_by":"-date","path":""},"sequence":{"options":{"theme":null,"css_class":null}},"flowchart":{"webfont":"https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.27/webfontloader.js","raphael":"https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js","underscore":"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js","sequence":"https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js","css":"","options":{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12},"flowchart":"https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.11.3/flowchart.min.js"},"archive_generator":{"per_page":10,"yearly":true,"monthly":true,"daily":false},"category_generator":{"per_page":10},"feed":{"type":"atom","limit":20,"hub":"","content":true,"content_limit":140,"content_limit_delim":"","path":"atom.xml"},"sitemap":{"path":"sitemap.xml"},"tag_generator":{"per_page":10},"marked":{"gfm":true,"pedantic":false,"sanitize":false,"tables":true,"breaks":true,"smartLists":true,"smartypants":true,"modifyAnchors":"","autolink":true},"server":{"port":4000,"log":false,"ip":"0.0.0.0","compress":false,"header":true},"since":2018,"favicon":"/favicon.ico","rss":false,"menu":{"Home":"/","Archives":"/archives/","Tags":"/tags","Categories":"/categories","About":"/about"},"color":"Default","toc":true,"fancybox":true,"pjax":true,"copyright":{"enable":false,"license":"<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/4.0/\" target=\"_blank\">知识共享署名-非商业性使用 4.0 国际许可协议</a>"},"reward":{"enable":false,"qrCode":{"wechat":null,"alipay":null}},"social":{"email":null,"stack-overflow":null,"twitter":null,"facebook":null,"linkedin":null,"google":null,"github":null,"weibo":null,"zhihu":null,"douban":null,"pocket":null,"tumblr":null,"instagram":null},"leancloud":{"app_id":"XNizmlDfL5XRLVzHx9FUDwzr-gzGzoHsz","app_key":"qAaEaIAnQtg7e7OdcpGIt4Vg"},"baidu_analytics":"3cfc01f01e71ce7de1a397c717086fcf","baidu_verification":null,"google_analytics":null,"google_verification":null,"changyan":{"appid":null,"appkey":null},"livere_datauid":"MTAyMC8zODc2MC8xNTI4OA==","version":"2.9.0"};
 </script>
 
-    <title> HBase二级索引 - Sugan's blog </title>
+    <title> HBase二级索引方案 - Sugan's blog </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -241,7 +241,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          HBase二级索引
+          HBase二级索引方案
         
       </h1>
 
@@ -259,7 +259,7 @@
         
         <div class="post-visits"
              data-url="/2018/08/29/hbase-secondary-index/"
-             data-title="HBase二级索引">
+             data-title="HBase二级索引方案">
             阅读次数 0
           </div>
         
@@ -304,18 +304,44 @@
 <li>华为的hindex ： 基于0.94版本，当年刚出来的时候比较火，但是版本较旧，看GitHub项目地址最近这几年就没更新过。</li>
 <li>Apache Phoenix： 功能围绕着SQL on hbase，支持和兼容多个hbase版本， 二级索引只是其中一块功能。  二级索引的创建和管理直接有SQL语法支持，使用起来很简便， 该项目目前社区活跃度和版本更新迭代情况都比较好。</li>
 </ul>
-<p>Apache Phoenix在Hadoop生态里面位置：<br><img src="/images/2018/08/hbase-secondary-index/phoenix-arch.png" alt="phoenix-arch"></p>
+<p>Apache Phoenix在目前开源的方案中，是一个比较优的选择。主打SQL on HBase ， 基于SQL能完成HBase的CRUD操作，支持JDBC协议。   Apache Phoenix在Hadoop生态里面位置：<br><img src="/images/2018/08/hbase-secondary-index/phoenix-arch.png" alt="phoenix-arch"></p>
+<p>Phoenix二级索引特点：</p>
+<ul>
+<li>Covered Indexes(覆盖索引) ：把关注的数据字段也附在索引表上，只需要通过索引表就能返回所要查询的数据（列）， 所以索引的列必须包含所需查询的列(SELECT的列和WHRER的列)。</li>
+<li>Functional indexes(函数索引)： 索引不局限于列，支持任意的表达式来创建索引。</li>
+<li>Global indexes(全局索引)：适用于读多写少场景。通过维护全局索引表，所有的更新和写操作都会引起索引的更新，写入性能受到影响。 在读数据时，Phoenix SQL会基于索引字段，执行快速查询。</li>
+<li>Local indexes(本地索引)：适用于写多读少场景。 在数据写入时，索引数据和表数据都会存储在本地。在数据读取时， 由于无法预先确定region的位置，所以在读取数据时需要检查每个region（以找到索引数据），会带来一定性能（网络）开销</li>
+</ul>
 <p>其他的在网上也很多自己基于Coprocessor实现二级索引的文章，大体都是遵循类似的思路：  构建一份“索引”的映射关系，存储在另一张hbase表或者其他DB里面。</p>
 <h4 id="方案优缺点："><a href="#方案优缺点：" class="headerlink" title="方案优缺点："></a>方案优缺点：</h4><ul>
 <li>优点： 基于Coprocessor的方案，从开发设计的角度看， 把很多对二级索引管理的细节都封装在的Coprocessor具体实现类里面， 这些细节对外面读写的人是无感知的，简化了数据访问者的使用。  </li>
-<li>缺点： 但是Coprocessor的方案入侵性比较强， 增加了在Regionserver内部需要运行和维护二级索引关系表的代码逻辑等，对Regionserver的写入性能会有一定影响。</li>
+<li>缺点： 但是Coprocessor的方案入侵性比较强， 增加了在Regionserver内部需要运行和维护二级索引关系表的代码逻辑等，对Regionserver的性能会有一定影响。</li>
 </ul>
-<h3 id="非Coprocessor方案"><a href="#非Coprocessor方案" class="headerlink" title="非Coprocessor方案"></a>非Coprocessor方案</h3><p></p>
-<p>选择不基于Coprocessor开发，自行在外部构建和维护索引关系也是另外一种方式。常见的是采用底层基于Apache Lucene的Elasticsearch(下面简称ES)或Apache Solr ，来构建强大的索引能力、搜索能力，  例如支持模糊查询、全文检索、组合查询、排序等。</p>
-<h4 id="Lily-HBase-Indexer"><a href="#Lily-HBase-Indexer" class="headerlink" title="Lily HBase Indexer"></a>Lily HBase Indexer</h4><p>Lily HBase Indexer(也简称 HBase Indexer)是国外的NGDATA开源的基于solr的索引构建工具， 特色是其基于HBase的备份机制，开发了一个叫SEP工具， 通过监控HBase 的WAL日志（Put/Delete操作），来触发对solr集群索引的异步更新， 基本对HBase无侵入性（但必须开启WAL ）， 流程图如下所示:</p>
+<h3 id="非Coprocessor方案"><a href="#非Coprocessor方案" class="headerlink" title="非Coprocessor方案"></a>非Coprocessor方案</h3><p><br>选择不基于Coprocessor开发，自行在外部构建和维护索引关系也是另外一种方式。<br>常见的是采用底层基于Apache Lucene的Elasticsearch(下面简称ES)或Apache Solr ，来构建强大的索引能力、搜索能力，  例如支持模糊查询、全文检索、组合查询、排序等。</p>
+<h4 id="Lily-HBase-Indexer"><a href="#Lily-HBase-Indexer" class="headerlink" title="Lily HBase Indexer"></a>Lily HBase Indexer</h4><p>Lily HBase Indexer(也简称 HBase Indexer)是国外的NGDATA公司开源的基于solr的索引构建工具， 特色是其基于HBase的备份机制，开发了一个叫SEP工具， 通过监控HBase 的WAL日志（Put/Delete操作），来触发对solr集群索引的异步更新， 基本对HBase无侵入性（但必须开启WAL ）， 流程图如下所示:</p>
 <p><img src="/images/2018/08/hbase-secondary-index/lily-hbase-indexer.png" alt="lily-hbase-indexer"></p>
-<h4 id="CDH-Search"><a href="#CDH-Search" class="headerlink" title="CDH Search"></a>CDH Search</h4><p>CDH Search是Hadoop发行商Cloudera公司开发的基于solr的HBase检索方案，部分集成了Lily HBase Indexer的功能。<br>下面是CDH search的核心组件交互图， 体现了在单次client端查询过程中， 核心的zookeeper和solr等的交互流程：<br><img src="/images/2018/08/hbase-secondary-index/cdh-search.png" alt="cdh-search"></p>
-<h2 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h2><p>其实对于在外部自定义构建二级索引的方式，  有自己的大数据团队的公司一般都会针对自己的业务场景， 自行构建ES/Solr的搜索集群。  对自己的索引集群进行业务定制和索引管理策略上的优化， 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。</p>
+<h4 id="CDH-Search"><a href="#CDH-Search" class="headerlink" title="CDH Search"></a>CDH Search</h4><p>CDH Search是Hadoop发行商Cloudera公司开发的基于solr的HBase检索方案，部分<strong>集成了Lily HBase Indexer</strong>的功能。<br>下面是CDH search的核心组件交互图， 体现了在单次client端查询过程中， 核心的zookeeper和solr等的交互流程：<br><img src="/images/2018/08/hbase-secondary-index/cdh-search.png" alt="cdh-search"></p>
+<p>CDH 支持构建索引方式:</p>
+<ul>
+<li>批量索引：<ul>
+<li>使用 Spark ：CDH自带 spark 批量index工具</li>
+<li>使用MapReduce ：集成Lily Indexer、自带MR index等工具</li>
+</ul>
+</li>
+<li>近实时索引（增量场景）：<ul>
+<li>使用 Flume 近实时（NRT）索引</li>
+<li>集成Lily NRT Indexer</li>
+</ul>
+</li>
+<li>基于Solr REST API自定义索引场景</li>
+</ul>
+<p>CDH Solr 索引查询流程示意图：<br>  <img src="/images/2018/08/hbase-secondary-index/cdh-index-query.png" alt="cdh-index-query"></p>
+<h2 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h2><p>其实对于在外部自定义构建二级索引的方式， 有自己的大数据团队的公司一般都会针对自己的业务场景进行优化， 自行构建ES/Solr的搜索集群。 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。 主要优化点包括：</p>
+<ul>
+<li>对企业的索引集群面向的业务场景和模式定制，例如ToB 企业需要针对多业务多项目进行运维管理</li>
+<li>针对多索引集群、跨集群查询进行优化</li>
+<li>基于业务的索引管理策略上的优化</li>
+</ul>
 <p>下面显示了数说基于ES做二级索引的构建流程， 包含：</p>
 <ul>
 <li>增量索引： 日常持续接入的数据源， 进行增量的索引更新</li>
@@ -329,10 +355,10 @@
  -->
 <p><hr><br>参考资料：</p>
 <ul>
-<li>Hbase coprocessor: <a href="https://blogs.apache.org/hbase/entry/coprocessor_introduction" target="_blank" rel="noopener">https://blogs.apache.org/hbase/entry/coprocessor_introduction</a></li>
+<li>HBase coprocessor: <a href="https://blogs.apache.org/hbase/entry/coprocessor_introduction" target="_blank" rel="noopener">https://blogs.apache.org/hbase/entry/coprocessor_introduction</a></li>
 <li>Cloudera Search : <a href="https://www.cloudera.com/documentation/enterprise/5-14-x/topics/search.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/5-14-x/topics/search.html</a></li>
-<li>Apache Phoenix: <a href="https://phoenix.apache.org/secondary_indexing.html" target="_blank" rel="noopener">https://phoenix.apache.org/secondary_indexing.html</a></li>
-<li>Lily HBase Indexer:  <ul>
+<li>Apache Phoenix Secondary indexing: <a href="https://phoenix.apache.org/secondary_indexing.html" target="_blank" rel="noopener">https://phoenix.apache.org/secondary_indexing.html</a></li>
+<li>NGDATA Lily HBase Indexer:  <ul>
 <li><a href="https://github.com/NGDATA/hbase-indexer/wiki" target="_blank" rel="noopener">https://github.com/NGDATA/hbase-indexer/wiki</a></li>
 <li><a href="https://www.ngdata.com/the-hbase-side-effect-processor-and-hbase-replication-monitoring/" target="_blank" rel="noopener">https://www.ngdata.com/the-hbase-side-effect-processor-and-hbase-replication-monitoring/</a></li>
 </ul>
