@@ -271,7 +271,7 @@
   <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase简介"><span class="toc-text">HBase简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要HBase二级索引"><span class="toc-text">为什么需要HBase二级索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase二级索引方案"><span class="toc-text">HBase二级索引方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Coprocessor方案"><span class="toc-text">基于Coprocessor方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#官方特性"><span class="toc-text">官方特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开源方案"><span class="toc-text">开源方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方案优缺点："><span class="toc-text">方案优缺点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非Coprocessor方案"><span class="toc-text">非Coprocessor方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Lily-HBase-Indexer"><span class="toc-text">Lily HBase Indexer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CDH-Search"><span class="toc-text">CDH Search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Datastory-二级索引方案介绍"><span class="toc-text">Datastory 二级索引方案介绍</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase简介"><span class="toc-text">HBase简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要HBase二级索引"><span class="toc-text">为什么需要HBase二级索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase二级索引方案"><span class="toc-text">HBase二级索引方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Coprocessor方案"><span class="toc-text">基于Coprocessor方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#官方特性"><span class="toc-text">官方特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开源方案"><span class="toc-text">开源方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方案优缺点："><span class="toc-text">方案优缺点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非Coprocessor方案"><span class="toc-text">非Coprocessor方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Lily-HBase-Indexer"><span class="toc-text">Lily HBase Indexer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CDH-Search"><span class="toc-text">CDH Search</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Datastory-二级索引方案介绍"><span class="toc-text">Datastory 二级索引方案介绍</span></a></li></ol>
     </div>
   </div>
 
@@ -289,6 +289,7 @@
 <li>适用于基于rowkey的单行数据快速随机读写</li>
 <li>适合基于rowkey前缀的范围扫描</li>
 </ul>
+<a id="more"></a>
 <p><img src="/images/2018/08/hbase-secondary-index/hbase-arch.png" alt="hbase-arch"></p>
 <p><img src="/images/2018/08/hbase-secondary-index/hbase-region-splits.png" alt="hbase-region-splits"></p>
 <h2 id="为什么需要HBase二级索引"><a href="#为什么需要HBase二级索引" class="headerlink" title="为什么需要HBase二级索引"></a>为什么需要HBase二级索引</h2><p>HBase里面只有rowkey作为一级索引， 如果要对库里的非rowkey字段进行数据检索和查询， 往往要通过MapReduce/Spark等分布式计算框架进行， 硬件资源消耗和时间延迟都会比较高。<br>为了HBase的数据查询更高效、适应更多的场景， 诸如使用非rowkey字段检索也能做到秒级响应， 或者支持各个字段进行模糊查询和多字段组合查询等， 因此需要在HBase上面构建二级索引， 以满足现实中更复杂多样的业务需求。</p>
@@ -314,7 +315,7 @@
 <h4 id="Lily-HBase-Indexer"><a href="#Lily-HBase-Indexer" class="headerlink" title="Lily HBase Indexer"></a>Lily HBase Indexer</h4><p>Lily HBase Indexer(也简称 HBase Indexer)是国外的NGDATA开源的基于solr的索引构建工具， 特色是其基于HBase的备份机制，开发了一个叫SEP工具， 通过监控HBase 的WAL日志（Put/Delete操作），来触发对solr集群索引的异步更新， 基本对HBase无侵入性（但必须开启WAL ）， 流程图如下所示:</p>
 <p><img src="/images/2018/08/hbase-secondary-index/lily-hbase-indexer.png" alt="lily-hbase-indexer"></p>
 <h4 id="CDH-Search"><a href="#CDH-Search" class="headerlink" title="CDH Search"></a>CDH Search</h4><p>CDH Search是Hadoop发行商Cloudera公司开发的基于solr的HBase检索方案，部分集成了Lily HBase Indexer的功能。<br>下面是CDH search的核心组件交互图， 体现了在单次client端查询过程中， 核心的zookeeper和solr等的交互流程：<br><img src="/images/2018/08/hbase-secondary-index/cdh-search.png" alt="cdh-search"></p>
-<h4 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h4><p>其实对于在外部自定义构建二级索引的方式，  有自己的大数据团队的公司一般都会针对自己的业务场景， 自行构建ES/Solr的搜索集群。  对自己的索引集群进行业务定制和索引管理策略上的优化， 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。</p>
+<h2 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h2><p>其实对于在外部自定义构建二级索引的方式，  有自己的大数据团队的公司一般都会针对自己的业务场景， 自行构建ES/Solr的搜索集群。  对自己的索引集群进行业务定制和索引管理策略上的优化， 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。</p>
 <p>下面显示了数说基于ES做二级索引的构建流程， 包含：</p>
 <ul>
 <li>增量索引： 日常持续接入的数据源， 进行增量的索引更新</li>
@@ -323,7 +324,7 @@
 <p><img src="/images/2018/08/hbase-secondary-index/ds-all-db.png" alt="ds-all-db"></p>
 <p>数据查询流程：</p>
 <p><img src="/images/2018/08/hbase-secondary-index/ds-alldb-query.png" alt="ds-alldb-query"></p>
-<p>其实数说故事在做全量库的过程中，还是有更多遇到的问题要解决，诸如数据一致性、大量小索引、多版本ES集群等，会在后续进行更细致的介绍和分享。</p>
+<p>Datastory在做全量库的过程中，还是有更多遇到的问题要解决，诸如数据一致性、大量小索引、多版本ES集群等，会在后续进行更细致的介绍和分享。</p>
 <!-- HBase作为在大数据技术生态系统中，几乎是不可或缺的一个存储数据库。 我们为了沿用HBase的海量存储特性，又让其能在不同业务场景中的满足我们的存储和查询需求， 需要对HBase构建二级索引。 通过对比了HBase官方、开源界和hadoop发行商、 大数据企业等的实施方案，
  -->
 <p><hr><br>参考资料：</p>
