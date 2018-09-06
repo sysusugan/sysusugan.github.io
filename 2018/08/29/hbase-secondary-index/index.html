@@ -336,9 +336,9 @@
 <li>基于Solr REST API自定义索引场景</li>
 </ul>
 <p>CDH Solr 索引查询流程示意图：<br>  <img src="/images/2018/08/hbase-secondary-index/cdh-index-query.png" alt="cdh-index-query"></p>
-<h2 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h2><p>其实对于在外部自定义构建二级索引的方式， 有自己的大数据团队的公司一般都会针对自己的业务场景进行优化， 自行构建ES/Solr的搜索集群。 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。 主要优化点包括：</p>
+<h2 id="Datastory-二级索引方案介绍"><a href="#Datastory-二级索引方案介绍" class="headerlink" title="Datastory 二级索引方案介绍"></a>Datastory 二级索引方案介绍</h2><p>其实对于在外部自定义构建二级索引的方式， 有自己的大数据团队的公司一般都会针对自己的业务场景进行优化， 自行构建ES/Solr的搜索集群。 例如数说故事企业内部的百亿级数据全量库，就是基于ES构建海量索引和检索能力的案例。 主要的要考虑点包括：</p>
 <ul>
-<li>对企业的索引集群面向的业务场景和模式定制，对通用数据模型进行抽象和平台化复用</li>
+<li>对企业的索引集群面向的业务场景和模式定制，对通用数据模型进行抽象和平台化组件复用</li>
 <li>需要针对多业务、多项目场景进行ES集群资源的合理划分和运维管理</li>
 <li>查询需要针对多索引集群、跨集群查询进行优化</li>
 <li>共用集群场景需要做好防护、监控、限流</li>
@@ -365,7 +365,6 @@
 </ul>
 </li>
 <li>深入理解HBase Indexer:<a href="https://blog.csdn.net/d6619309/article/details/51500368" target="_blank" rel="noopener">https://blog.csdn.net/d6619309/article/details/51500368</a></li>
-<li>奇虎360 HBASE二级索引的设计与实践：  <a href="http://www.infoq.com/cn/presentations/qihoo360-hbase-two-stage-index-design-and-practice" target="_blank" rel="noopener">http://www.infoq.com/cn/presentations/qihoo360-hbase-two-stage-index-design-and-practice</a></li>
 <li>华为hindex: <a href="https://github.com/Huawei-Hadoop/hindex" target="_blank" rel="noopener">https://github.com/Huawei-Hadoop/hindex</a></li>
 <li>HBase应用场景、原理与基本架构: <a href="https://blog.csdn.net/qq_25371579/article/details/50894145" target="_blank" rel="noopener">https://blog.csdn.net/qq_25371579/article/details/50894145</a></li>
 </ul>
