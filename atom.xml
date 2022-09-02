@@ -35,6 +35,8 @@
     
     </summary>
     
+      <category term="思考" scheme="https://sugan.fun/categories/%E6%80%9D%E8%80%83/"/>
+    
     
       <category term="思考" scheme="https://sugan.fun/tags/%E6%80%9D%E8%80%83/"/>
     
@@ -58,6 +60,8 @@
 &lt;p&gt;对于人类群体或个人， 如何促进人类自身或同外部环境一起达到和谐。 先贤们早就思考和创立了自己的哲学， 即核心的三观一论。&lt;br&gt;
     
     </summary>
+    
+      <category term="思考" scheme="https://sugan.fun/categories/%E6%80%9D%E8%80%83/"/>
     
     
       <category term="思考" scheme="https://sugan.fun/tags/%E6%80%9D%E8%80%83/"/>
@@ -90,6 +94,8 @@
     
     </summary>
     
+      <category term="技术" scheme="https://sugan.fun/categories/%E6%8A%80%E6%9C%AF/"/>
+    
     
       <category term="hbase" scheme="https://sugan.fun/tags/hbase/"/>
     
@@ -111,6 +117,8 @@
       &lt;p&gt;在这里介绍一种快速编译和修改jar里面特定class文件的方法， 本质上是对javac 、java、zip命令的综合使用。 在某些场景，能极大地提高部署和上线效率， 但是仅适用于少数为了快速调试、对外上线的特定业务场景。但是， 在正规的工程管理里面，仍然需要按项目开发和代码管理规范来！&lt;/p&gt;
     
     </summary>
+    
+      <category term="技术" scheme="https://sugan.fun/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="https://sugan.fun/tags/java/"/>
@@ -155,6 +163,8 @@
 &lt;/blockquote&gt;
     
     </summary>
+    
+      <category term="技术" scheme="https://sugan.fun/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="Hexo" scheme="https://sugan.fun/tags/Hexo/"/>
